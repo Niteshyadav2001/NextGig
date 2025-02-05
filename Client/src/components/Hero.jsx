@@ -1,7 +1,22 @@
-import React from "react";
+import React, { useRef } from "react";
 import { assets } from "../assets/assets";
+import { useDispatch } from "react-redux";
+import { setSearchFilter } from "../slices/AppSlice";
 
 function Hero() {
+
+  const titleRef = useRef()
+  const locationRef = useRef()
+
+  const dispatch = useDispatch()
+  
+  const onSearch = () => {
+    dispatch(setSearchFilter({
+      title: titleRef.current.value,
+      location: locationRef.current.value,
+    }))
+  }
+
   return (
     <div className="conatainer 2xl:px-20 mx-auto my-10">
       <div className="bg-gradient-to-r from-purple-700 to-purple-950 text-white py-16 text-center mx-2 rounded-xl">
@@ -24,6 +39,7 @@ function Hero() {
               type="text"
               placeholder="Search for jobs"
               className="rounded outline-none w-full max:sm:text-xs p-2"
+              ref={titleRef}
             />
           </div>
           <div className="flex items-center gap-2">
@@ -34,11 +50,12 @@ function Hero() {
             />
             <input
               type="text"
-              placeholder="Loaction"
+              placeholder="Location"
               className="rounded outline-none w-full max:sm:text-xs p-2"
+              ref={locationRef}
             />
           </div>
-          <button className="bg-blue-700 text-white px-6 py-1 rounded-md cursor-pointer hover:bg-blue-800">
+          <button onClick={onSearch} className="bg-blue-700 text-white px-6 py-1 rounded-md cursor-pointer hover:bg-blue-800">
             Search
           </button>
         </div>
