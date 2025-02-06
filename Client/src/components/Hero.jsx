@@ -9,11 +9,14 @@ function Hero() {
   const locationRef = useRef()
 
   const dispatch = useDispatch()
-  
+
   const onSearch = () => {
+    
+    
     dispatch(setSearchFilter({
-      title: titleRef.current.value,
-      location: locationRef.current.value,
+      title: titleRef.current?.value.trim(),
+      location: locationRef.current?.value.trim(),     
+      isSearched: ((titleRef.current?.value.trim() !== "") && (locationRef.current?.value.trim() !== ""))
     }))
   }
 

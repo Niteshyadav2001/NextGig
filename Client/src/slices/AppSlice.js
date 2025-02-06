@@ -5,6 +5,7 @@ export const AppSlice = createSlice({
   initialState:{ 
     title: null,
     location: null,
+    isSearched: false,
   },
   reducers:{
     setSearchFilter:(state,action) => {
