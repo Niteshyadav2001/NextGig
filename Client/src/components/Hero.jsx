@@ -11,8 +11,6 @@ function Hero() {
   const dispatch = useDispatch()
 
   const onSearch = () => {
-    
-    
     dispatch(setSearchFilter({
       title: titleRef.current?.value.trim(),
       location: locationRef.current?.value.trim(),     
