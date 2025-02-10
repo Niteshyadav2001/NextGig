@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { assets, JobCategories, JobLocations, jobsData } from '../assets/assets';
 import { setSearchFilter } from '../slices/AppSlice';
@@ -10,7 +10,9 @@ function JobListing() {
   const searchedData = useSelector((store) => store.app)
   const {isSearched, title, location} = searchedData;
   const dispatch = useDispatch()
-  
+  const jobs = useSelector((store)=>store.jobs.jobs)  
+  const [currentPage,setCurrentPage] = useState(1)
+
 
 
   return (
@@ -92,10 +94,33 @@ function JobListing() {
         <h3 className='font-medium text-3xl py-2' id='job-list'>Latest Jobs</h3>
         <p className='text-gray-600 mb-8 text-md'>Get your desired job from top companies.</p>
         <div className='grid grid-cols-1 sm:grid:cols-2 xl:grid-cols-3 gap-5 '>
-            {jobsData.map((job,index)=>(
+            {jobsData.slice((currentPage-1)*6,currentPage*6).map((job,index)=>(
               <JobCard key={index} job={job} />
             ))}
         </div>
+
+
+        {/* we will do our pagination here  */}
+        {
+          // console.log(jobs.length > 0)
+          jobs.length > 0 && (
+            <div className='flex items-center justify-center space-x-2 mt-10'>
+              <a href="#job-list">
+                <img onClick={() => setCurrentPage(Math.max(currentPage-1),1)} src={assets.left_arrow_icon} alt="left_arrow_icon" />
+              </a>
+
+              {Array.from({length:Math.ceil(jobs.length/6)}).map((_,index) =>(
+                <a href="#job-list">
+                  <button onClick={() => setCurrentPage(index+1)} className={`w-10 h-10 flex items-center justify-center border border-gray-300 rounded ${currentPage === index+1?'bg-blue-100 text-blue-500':'text-gray-500'}`}>{index+1}</button>
+                </a>
+              ))}
+
+              <a href="#job-list">
+                <img onClick={() => setCurrentPage(Math.min(currentPage+1),Math.ceil(jobs.length / 6))} src={assets.right_arrow_icon} alt="right_arrow_icon" />
+              </a>
+            </div>
+          )
+        }
         </section>
     </div>
   )
