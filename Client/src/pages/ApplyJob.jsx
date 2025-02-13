@@ -17,7 +17,6 @@ function ApplyJob() {
     const data = jobs.filter((job) => job._id === id);
     if (data.length !== 0) {
       setJobData(data[0]);
-      console.log(data[0]);
     }
   };
 
