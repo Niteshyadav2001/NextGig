@@ -8,6 +8,8 @@
 - Clerk Authentication
 - React-Redux
 - React Redux Toolkit
+- K converter
+- Moment
 
 # Installation  
 - Install tailwind by reading documentation from tailwindcss.com
@@ -17,3 +19,5 @@
 - Set up clerk authentication by using latest documentation
 - npm i react-redux
 - npm i @reduxjs/toolkit
+- npm i k-convert
+- npm i moment

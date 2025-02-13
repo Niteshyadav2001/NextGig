@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { assets, JobCategories, JobLocations, jobsData } from '../assets/assets';
+import { assets, JobCategories, JobLocations } from '../assets/assets';
 import { setSearchFilter } from '../slices/AppSlice';
 import JobCard from './JobCard';
 
