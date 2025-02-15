@@ -5,6 +5,11 @@ import ApplyJob from "./pages/ApplyJob"
 import Applications from "./pages/Applications"
 import RecruiterLogin from "./components/RecruiterLogin"
 import { useSelector } from "react-redux"
+import Dashboard from "./pages/Dashboard"
+import AddJob from "./pages/AddJob"
+import ManageJobs from "./pages/ManageJobs"
+import ViewApplications from "./pages/ViewApplications"
+import 'quill/dist/quill.snow.css'
 
 function App() {
 
@@ -17,6 +22,11 @@ function App() {
         <Route path="/" element={<Home/>} />
         <Route path="/apply-jobs/:id" element={<ApplyJob/>} />
         <Route path="/applications" element={<Applications/>} />
+        <Route path="/dashboard" element={<Dashboard/>} >
+          <Route path="add-job" element={<AddJob/>} />
+          <Route path="manage-jobs" element={<ManageJobs/>} />
+          <Route path="view-applications" element={<ViewApplications/>} />
+        </Route>
       </Routes>
     </div>
   )
