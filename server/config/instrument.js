@@ -3,6 +3,7 @@ import * as Sentry from "@sentry/node"
 import { nodeProfilingIntegration } from "@sentry/profiling-node"
 
 Sentry.init({
+  registerEsmLoaderHooks: false,
   dsn: "https://5cf19dc2af61a2ed4f6fee7c2c6124d9@o4508858622541824.ingest.us.sentry.io/4508858625687552",
   integrations: [
     nodeProfilingIntegration(),

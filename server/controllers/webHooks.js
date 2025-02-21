@@ -6,9 +6,9 @@ import User from '../models/User.js'
 export const clerkWebhooks = async(req,res) => {
   try {
     // create a svix instance with clerk webhook secret
-    const whook  = new Webhook(process.env.CLERK_WEBHOOK_SCRET)
+    const whook  = new Webhook(process.env.CLERK_WEBHOOK_SECRET)
 
-    // Verifying headers
+    // Verifying headers  
     await whook.verify(JSON.stringify(req.body),{
       'svix-id': req.headers["svix-id"],
       'svix-timestamp' : req.headers["svix-timestamp"],
@@ -41,7 +41,7 @@ export const clerkWebhooks = async(req,res) => {
           image: data.image_url,
         }
         await User.findByIdAndUpdate(data.id, userData)
-        re.json({})
+        res.json({})
         break;
       }
 
@@ -58,5 +58,10 @@ export const clerkWebhooks = async(req,res) => {
   } catch (error) {
       console.log(error.message)
       res.json({sucess:false,message:'Webhooks Error'})
+
+      console.log('Webhook request received:', req.body);
+      console.log('Headers:', req.headers);
+      console.error('Webhook Error:', error.message);
+      res.status(500).json({ success: false, message: 'Webhooks Error', error: error.message });
   }
 }

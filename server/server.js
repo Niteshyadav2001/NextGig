@@ -4,8 +4,7 @@ import cors from 'cors'
 import 'dotenv/config'
 import connectDB from './config/db.js'
 import * as Sentry from "@sentry/node";
-import { clerkWebhooks } from './controllers/webhooks.js'
-
+import { clerkWebhooks } from './controllers/webHooks.js'
 
 
 // initiaze express
