@@ -99,7 +99,7 @@ export const updateUserResume = async (req, res) => {
 
         await userData.save();
 
-        res.json({ success: true, message: 'Resume Uplated' })
+        return res.json({ success: true, message: 'Resume Uplated' })
         
     } catch (error) {
         res.json({ success: false, message: error.message });

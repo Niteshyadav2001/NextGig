@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { assets } from "../assets/assets";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setRecruiterLogin } from "../slices/RecruiterSlice";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { selectBackendApi } from "../slices/BackendAPI";
+import { setCompanyData, setCompanyToken } from "../slices/CompanySlice";
+import { toast } from "react-toastify";
 
 function RecruiterLogin() {
   const [state, setState] = useState("Login");
@@ -12,12 +17,55 @@ function RecruiterLogin() {
   const [isTextDataSubmitted, setIsTextDataSubmitted] = useState(false);
 
   const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const backendAPI = useSelector(selectBackendApi)
 
   const onSubmitHandler = async (e) => {
     e.preventDefault();
     if (state === "Signup" && !isTextDataSubmitted) {
-      setIsTextDataSubmitted(true);
+      return setIsTextDataSubmitted(true);
     }
+
+    try {
+      if(state === "Login"){
+        const {data} = await axios.post(backendAPI + '/api/company/login', {email, password})
+
+        if(data.success){
+          dispatch(setCompanyToken({companyToken: data.token}))
+          dispatch(setCompanyData({comapnyData: data.company}))
+          localStorage.setItem('companyToken', data.token)
+          dispatch(setRecruiterLogin({isRecruiterLogin: false}))
+          navigate('/dashboard')
+        }
+        else{
+          toast.error(data.message)
+        }
+      } else {
+        const formData = new FormData()
+        formData.append('name',name)
+        formData.append('password',password)
+        formData.append('email',email)
+        formData.append('image',image)
+
+        const { data } = await axios.post(backendAPI+'/api/company/register',formData)
+
+        console.log(data.success)
+      
+        if(data.success){
+          dispatch(setCompanyToken({companyToken: data.token}))
+          dispatch(setCompanyData({comapnyData: data.company}))
+          localStorage.setItem('companyToken', data.token)
+          dispatch(setRecruiterLogin({isRecruiterLogin: false}))
+          navigate('/dashboard')
+        }
+        else{
+          toast.error(data.message)
+        }
+      }
+    } catch (error) {
+      toast.error(error)
+    }
+
   };
 
 
@@ -111,7 +159,7 @@ function RecruiterLogin() {
 
         <button
           type="submit"
-          className="bg-blue-600 w-full text-white py-2 rounded-full mt-5"
+          className="bg-blue-600 w-full cursor-pointer text-white py-2 rounded-full mt-5"
         >
           {state === "Login"
             ? "Login"
