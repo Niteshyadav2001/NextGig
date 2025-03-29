@@ -32,7 +32,7 @@ function RecruiterLogin() {
 
         if(data.success){
           dispatch(setCompanyToken({companyToken: data.token}))
-          dispatch(setCompanyData({comapnyData: data.company}))
+          dispatch(setCompanyData({companyData: data.company}))
           localStorage.setItem('companyToken', data.token)
           dispatch(setRecruiterLogin({isRecruiterLogin: false}))
           navigate('/dashboard')
@@ -49,11 +49,11 @@ function RecruiterLogin() {
 
         const { data } = await axios.post(backendAPI+'/api/company/register',formData)
 
-        console.log(data.success)
+        // console.log(data.success)
       
         if(data.success){
           dispatch(setCompanyToken({companyToken: data.token}))
-          dispatch(setCompanyData({comapnyData: data.company}))
+          dispatch(setCompanyData({companyData: data.company}))
           localStorage.setItem('companyToken', data.token)
           dispatch(setRecruiterLogin({isRecruiterLogin: false}))
           navigate('/dashboard')

@@ -22,7 +22,14 @@ await connectCloudinary();
 
 
 // middlewares
-app.use(cors())
+// const cors = require("cors");
+
+app.use(
+  cors({
+    origin: "http://localhost:5173", // Replace with your frontend URL
+    credentials: true, // Allow cookies/authorization headers
+  })
+);
 app.use(express.json())
 app.use(clerkMiddleware())
 

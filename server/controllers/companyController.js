@@ -40,7 +40,7 @@ export const registerCompany = async (req, res) => {
             success: true,
             company: {
                 _id: company._id,
-                namw: company.name,
+                name: company.name,
                 email: company.email,
                 image: company.image
             },
@@ -66,7 +66,7 @@ export const loginCompany = async (req, res) => {
                 success: true,
                 company: {
                     _id: company._id,
-                    namw: company.name,
+                    name: company.name,
                     email: company.email,
                     image: company.image
                 },
@@ -89,8 +89,10 @@ export const getCompanyData = async (req, res) => {
 
     try {
         
-        const company = req.company;
+        console.log("inside the company data.")
 
+        const company = req.company;
+        
         res.json({success: true, company});
         
     } catch (error) {

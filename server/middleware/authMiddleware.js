@@ -2,7 +2,9 @@ import jwt from 'jsonwebtoken'
 import Company from '../models/Company.js'
 
 export const protectCompany = async (req,res,next) => {
+    console.log("inside the middleware")
     const token = req.headers.token
+
 
     if(!token){
         return res.json({success: false, message: 'Not authorized, Login again'})
