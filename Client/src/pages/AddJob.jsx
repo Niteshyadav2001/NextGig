@@ -3,7 +3,7 @@ import Quill from 'quill'
 import { JobCategories, JobLocations } from "../assets/assets";
 import axios from 'axios';
 import { useSelector } from "react-redux";
-import { toast } from "react-toastify";
+import { ToastContainer, toast } from 'react-toastify';
 import useCompanyAuth from "../../hooks/useCompanyAuth";
 
 function AddJob() {
@@ -37,16 +37,14 @@ function AddJob() {
           withCredentials: true, // Moved inside the config object
           
         }
-      );
-      
-
+      )
 
       if(data.success){
-        toast.success(data.message)
-        // setTitle('')
-        // setSalary(0)
-        // quillRef.current.root.innerHTML = ""
+        setTitle('')
+        setSalary(0)
+        quillRef.current.root.innerHTML = ""
         console.log("data sucessfully sent to database.")
+        toast.success(data.message)
       }
       else {
         toast.error(data.message)
