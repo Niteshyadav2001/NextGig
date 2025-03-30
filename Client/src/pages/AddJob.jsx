@@ -4,7 +4,7 @@ import { JobCategories, JobLocations } from "../assets/assets";
 import axios from 'axios';
 import { useSelector } from "react-redux";
 import { ToastContainer, toast } from 'react-toastify';
-import useCompanyAuth from "../../hooks/useCompanyAuth";
+import useCompanyAuth from "../../hooks/useFetchJobs";
 
 function AddJob() {
   const [title, setTitle] = useState("");

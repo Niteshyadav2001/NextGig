@@ -6,6 +6,7 @@ import JobSliceReducer from '../slices/JobSlice'
 import RecruiterSliceReducer from '../slices/RecruiterSlice'
 import CompanySliceReducer from '../slices/CompanySlice'
 import BackendAPISliceReducer  from '../slices/BackendAPI'
+import UserSliceReducer from '../slices/UserSlice'
 
 
 const persistConfig = {
@@ -21,6 +22,7 @@ export const store = configureStore({
     recuiter: persistReducer(persistConfig, RecruiterSliceReducer),
     company: persistReducer(persistConfig, CompanySliceReducer),
     backendAPI: persistReducer(persistConfig, BackendAPISliceReducer),
+    user: persistReducer(persistConfig, UserSliceReducer)
   },
 })
 

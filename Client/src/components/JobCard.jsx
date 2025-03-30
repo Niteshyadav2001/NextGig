@@ -8,7 +8,7 @@ function JobCard({job}) {
   return (
     <div className='border-2 border-gray-300 rounded-md p-5 w-'>
       <div>
-        <img className='h-8' src={assets.company_icon} alt="" />
+        <img className='h-8' src={job.companyId.image} alt="" />
       </div>
       <h4 className='font-medium text-2xl mt-3 '>{job.title}</h4>
       <div className='pt-5 flex gap-5'>

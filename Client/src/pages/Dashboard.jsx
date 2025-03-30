@@ -1,13 +1,30 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { NavLink, Outlet, useNavigate } from 'react-router-dom'
 import { assets } from '../assets/assets'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { setCompanyData, setCompanyToken } from '../slices/CompanySlice'
 
 function Dashboard() {
   const navigate = useNavigate()
+  const dispatch  = useDispatch()
 
   const { companyData} = useSelector((store) => store.company)
   // console.log(companyData)
+
+
+
+  // Function to logout for company
+  const logout = () => {
+    dispatch(setCompanyData({companyData: null}))
+    dispatch(setCompanyToken({companyToken: null}))
+    navigate('/')
+  }
+
+  // As soon as the dashboard is open, manage jobs page is openend.
+  useEffect(() => {
+    if(companyData)
+        navigate('/dashboard/manage-jobs')
+  },[companyData])
 
   return (
     <div className='min-h-screen'>
@@ -22,7 +39,7 @@ function Dashboard() {
                 <img className='w-10 rounded-full outline-none' src={companyData.image} alt="" />
                 <div className='absolute hidden group-hover:block top-0 right-0 z-10 text-black rounded pt-12'>
                   <ul className='list-none m-0 bg-gray-300 rounded-md border text-sm'>
-                    <li className='py-1 px-2 cursor-pointer pr-10'>
+                    <li onClick={logout} className='py-1 px-2 cursor-pointer pr-10'>
                       Logout
                     </li>
                   </ul>

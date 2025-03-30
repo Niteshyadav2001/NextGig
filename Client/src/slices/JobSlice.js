@@ -1,10 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { jobsData } from "../assets/assets";
+
+// all jobs are fetched in a hook named useFetchJobs and this hook called in app.jsx
 
 export const JobSlice = createSlice({
   name:"jobs",
   initialState:{ 
-    jobs: jobsData,
+    jobs: [],
   },
   reducers:{
     setJobs:(state,action) => {

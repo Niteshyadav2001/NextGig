@@ -11,13 +11,20 @@ import ManageJobs from "./pages/ManageJobs"
 import ViewApplications from "./pages/ViewApplications"
 import 'quill/dist/quill.snow.css'
 import { ToastContainer, toast } from 'react-toastify';
+import useFetchJobs from "../hooks/useFetchJobs"
+import useFetchUserData from "../hooks/useFetchUserData"
 
 function App() {
 
   const {isRecruiterLogin} = useSelector((store) => store.recuiter)
   const {companyToken} = useSelector((store) => store.company)
 
-  // console.log(companyToken)
+  // calling useFetch Jobs
+  useFetchJobs()
+  
+  // calling useFetchUserData
+  useFetchUserData()
+
 
   return (
     <div>
