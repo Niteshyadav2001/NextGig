@@ -9,13 +9,13 @@ export const UserSlice = createSlice({
   },
   reducers: {
     setUserData:(state,action) => {
-      return { ...state, ...action.payload}
+      state.userData = action.payload;
     },
     setUserApplications:(state,action) => {
-      return { ...state, ...action.payload}
+      state.userApplications = action.payload;
     },
     setUserToken:(state,action) => {
-      return {...state, ...action.payload}
+      state.userToken = action.payload;
     }
   }
 })

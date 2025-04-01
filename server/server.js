@@ -12,6 +12,9 @@ import jobRoutes from './routes/jobRoutes.js'
 import userRoutes from './routes/userRoutes.js'
 import {clerkMiddleware} from '@clerk/express'
 
+
+
+
 // initiaze express
 const app = express()
 
@@ -20,10 +23,7 @@ const app = express()
 await connectDB()
 await connectCloudinary();
 
-
-// middlewares
-// const cors = require("cors");
-
+// MiddleWares
 app.use(
   cors({
     origin: "http://localhost:5173", // Replace with your frontend URL
@@ -40,6 +40,8 @@ app.get("/debug-sentry", function mainHandler(req, res) {
   throw new Error("My first Sentry error!");
 });
 app.post('/webhooks',clerkWebhooks)
+
+
 app.use('/api/company', companyRoutes)
 app.use('/api/jobs',jobRoutes)
 app.use('/api/users',userRoutes)

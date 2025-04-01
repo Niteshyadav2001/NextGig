@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { assets } from "../assets/assets";
 import { useDispatch, useSelector } from "react-redux";
-import { setRecruiterLogin } from "../slices/RecruiterSlice";
+import { setRecruiterLogin } from "../slices/LoginSlice";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { selectBackendApi } from "../slices/BackendAPI";
@@ -33,8 +33,7 @@ function RecruiterLogin() {
         if(data.success){
           dispatch(setCompanyToken({companyToken: data.token}))
           dispatch(setCompanyData({companyData: data.company}))
-          localStorage.setItem('companyToken', data.token)
-          dispatch(setRecruiterLogin({isRecruiterLogin: false}))
+          dispatch(setRecruiterLogin(false))
           navigate('/dashboard')
         }
         else{
@@ -190,7 +189,7 @@ function RecruiterLogin() {
           </p>
         )}
 
-        <img className="absolute top-5 right-5 cursor-pointer" onClick={() => dispatch(setRecruiterLogin({isRecruiterLogin: false}))} src={assets.cross_icon} alt="" />
+        <img className="absolute top-5 right-5 cursor-pointer" onClick={() => dispatch(setRecruiterLogin(false))} src={assets.cross_icon} alt="" />
       </form>
     </div>
   );

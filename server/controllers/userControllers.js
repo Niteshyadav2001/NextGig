@@ -1,28 +1,119 @@
 import { response } from "express";
 import JobApplication from "../models/jobApplication.js";
+import generateToken from "../utils/generateToken.js";
 import User from "../models/User.js";
 import { v2 as cloudinary } from 'cloudinary'
+import { clerkClient } from "@clerk/clerk-sdk-node";
+import bcrypt from 'bcrypt'
 
+// register a user
+export const registerUser = async(req, res) => {
+    const { name, email, password } = req.body
+    const imageFile = req.file
 
-// get user data 
-export const getUserData = async (req, res) => {
-
-    const userId = req.auth.userId;
+    if (!name || !email || !password || !imageFile) {
+        return req.json({ success: false, message: "Missing Details" });
+    }
 
     try {
+        const userExists = await User.findOne({ email })
 
-        const user = await User.auth.findById(userId);
-
-        if (!user) {
-            res.json({ success: false, message: 'User not found !!' })
+        if(userExists){
+            return res.json({ success: false, message: "User already registered" });
         }
 
-        res.json({ success: true, user })
+        const salt = await bcrypt.genSalt(10);
+        const hashPassword = await bcrypt.hash(password, salt)
+
+        const imageUpload = await cloudinary.uploader.upload(imageFile.path)
+        console.log(imageUpload.secure_url);
+
+        const user = await User.create({
+            name,
+            email,
+            password: hashPassword,
+            resume: "",
+            image: imageUpload.secure_url
+        })
+
+        res.json({
+            success: true,
+            user: {
+                _id: user._id,
+                name: user.name,
+                email: user.email,
+                image: user.image,
+                resume: "",
+            },
+            token: generateToken(user._id)
+        })
 
     } catch (error) {
-        res.json({ success: false, message: error.message });
+        return res.json({success: false, message: error.message})
     }
 }
+
+// login a user
+export const loginUser = async(req, res) => {
+    const { email,password } = req.body;
+
+    try {
+        const user = await User.findOne({ email })
+
+        if (await bcrypt.compare(password, user.password)) {
+            res.json({
+                success: true,
+                user: {
+                    _id: user._id,
+                    name: user.name,
+                    email: user.email,
+                    image: user.image
+                },
+                token: generateToken(user._id)
+            })
+        }
+        else{
+            res.json({success: false, message: 'Invalid email or password'})
+        }
+            
+    } catch (error) {
+        res.json({success: false, message: error.message})
+    }
+}
+
+// get user data
+export const getUserData = async (req, res) => {
+    try {
+        // Clerk middleware ensures authentication, so req.auth is available
+
+        const userId = req.auth?.userId;
+
+        if (!userId) {
+            return res.status(401).json({ message: "Unauthorized - No user ID" });
+        }
+
+        // Fetch user details from Clerk
+        const user = await clerkClient.users.getUser(userId);
+
+        if (!user) {
+            return res.status(404).json({ message: "User not found in Clerk" });
+        }
+        console.log(res);
+        res.status(200).json({
+            id: user.id,
+            email: user.emailAddresses[0]?.emailAddress,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            imageUrl: user.imageUrl,
+            createdAt: user.createdAt,
+            resume: user.resume,
+        });
+    } catch (error) {
+        console.error("Error fetching user data:", error);
+        res.status(500).json({ message: "Internal Server Error", error: error.message });
+    }
+};
+
 
 // Apply for a job
 export const applyForJob = async (req, res) => {

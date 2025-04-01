@@ -13,10 +13,11 @@ import 'quill/dist/quill.snow.css'
 import { ToastContainer, toast } from 'react-toastify';
 import useFetchJobs from "../hooks/useFetchJobs"
 import useFetchUserData from "../hooks/useFetchUserData"
+import UserLogin from "./components/UserLogin"
 
 function App() {
 
-  const {isRecruiterLogin} = useSelector((store) => store.recuiter)
+  const {isRecruiterLogin, isUserLogin} = useSelector((store) => store.login)
   const {companyToken} = useSelector((store) => store.company)
 
   // calling useFetch Jobs
@@ -29,6 +30,7 @@ function App() {
   return (
     <div>
       { isRecruiterLogin && <RecruiterLogin /> }
+      { isUserLogin && <UserLogin />}
       <ToastContainer />
       <Routes>
         <Route path="/" element={<Home/>} />
