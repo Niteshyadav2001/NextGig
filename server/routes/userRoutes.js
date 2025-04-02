@@ -1,7 +1,8 @@
 import express from 'express'
-import { applyForJob, getUserApplications, getUserData, updateUserResume, registerUser, loginUser } from '../controllers/userControllers.js'
+import { applyForJob, getUserApplications, updateUserResume, registerUser, loginUser } from '../controllers/userControllers.js'
 import upload from '../config/multer.js'
-import { ClerkExpressRequireAuth } from '@clerk/clerk-sdk-node';
+import { protectUser } from '../middleware/authUserMiddleware.js'
+// import { ClerkExpressRequireAuth } from '@clerk/clerk-sdk-node';
 
 const router = express.Router()
 
@@ -12,15 +13,15 @@ router.post('/register',upload.single('image'), registerUser)
 router.post('/login',loginUser)
 
 // get usser data
-router.get('/user', ClerkExpressRequireAuth(), getUserData);
+// router.get('/user', ClerkExpressRequireAuth(), getUserData);
 
 // Applay for a job
-router.post('/apply', applyForJob)
+router.post('/apply', protectUser, applyForJob)
 
 // get applied jobs data
-router.get('/applications', getUserApplications)
+router.get('/applications', protectUser, getUserApplications)
 
 // update user profile (resume)
-router.post('/update-resume',upload.single('resume'), updateUserResume)
+router.post('/update-resume', protectUser, upload.single('resume'), updateUserResume)
 
 export default router;  

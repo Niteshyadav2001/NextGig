@@ -12,7 +12,6 @@ import ViewApplications from "./pages/ViewApplications"
 import 'quill/dist/quill.snow.css'
 import { ToastContainer, toast } from 'react-toastify';
 import useFetchJobs from "../hooks/useFetchJobs"
-import useFetchUserData from "../hooks/useFetchUserData"
 import UserLogin from "./components/UserLogin"
 
 function App() {
@@ -22,9 +21,6 @@ function App() {
 
   // calling useFetch Jobs
   useFetchJobs()
-  
-  // calling useFetchUserData
-  useFetchUserData()
 
 
   return (

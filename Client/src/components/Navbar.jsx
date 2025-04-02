@@ -3,12 +3,20 @@ import { assets } from '../assets/assets'
 import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { setRecruiterLogin, setUserLogin } from '../slices/LoginSlice'
+import { setUserData, setUserToken } from '../slices/UserSlice'
 
 function Navbar() {
 
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const { userToken, userData } = useSelector((store) => store.user)
+
+
+  const logout = () => {
+    dispatch(setUserData(null))
+    dispatch(setUserToken(null))
+    dispatch(setUserLogin(false))
+  }
 
   console.log(userToken)
 
@@ -26,6 +34,7 @@ function Navbar() {
             <p>Hi, {userData.name}</p>
             <Link to='/'>
               <img
+                onClick={logout}
                 className="w-10 h-10 rounded-full object-cover"
                 src={userData.image}
                 alt="User Profile"

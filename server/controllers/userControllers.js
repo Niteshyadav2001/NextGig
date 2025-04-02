@@ -3,7 +3,6 @@ import JobApplication from "../models/jobApplication.js";
 import generateToken from "../utils/generateToken.js";
 import User from "../models/User.js";
 import { v2 as cloudinary } from 'cloudinary'
-import { clerkClient } from "@clerk/clerk-sdk-node";
 import bcrypt from 'bcrypt'
 
 // register a user
@@ -32,7 +31,7 @@ export const registerUser = async(req, res) => {
             name,
             email,
             password: hashPassword,
-            resume: "",
+            resume: null,
             image: imageUpload.secure_url
         })
 
@@ -43,7 +42,7 @@ export const registerUser = async(req, res) => {
                 name: user.name,
                 email: user.email,
                 image: user.image,
-                resume: "",
+                resume: null,
             },
             token: generateToken(user._id)
         })
@@ -67,7 +66,8 @@ export const loginUser = async(req, res) => {
                     _id: user._id,
                     name: user.name,
                     email: user.email,
-                    image: user.image
+                    image: user.image,
+                    resume: user.resume,
                 },
                 token: generateToken(user._id)
             })
@@ -82,37 +82,37 @@ export const loginUser = async(req, res) => {
 }
 
 // get user data
-export const getUserData = async (req, res) => {
-    try {
-        // Clerk middleware ensures authentication, so req.auth is available
+// export const getUserData = async (req, res) => {
+//     try {
+//         // Clerk middleware ensures authentication, so req.auth is available
 
-        const userId = req.auth?.userId;
+//         const userId = req.auth?.userId;
 
-        if (!userId) {
-            return res.status(401).json({ message: "Unauthorized - No user ID" });
-        }
+//         if (!userId) {
+//             return res.status(401).json({ message: "Unauthorized - No user ID" });
+//         }
 
-        // Fetch user details from Clerk
-        const user = await clerkClient.users.getUser(userId);
+//         // Fetch user details from Clerk
+//         const user = await clerkClient.users.getUser(userId);
 
-        if (!user) {
-            return res.status(404).json({ message: "User not found in Clerk" });
-        }
-        console.log(res);
-        res.status(200).json({
-            id: user.id,
-            email: user.emailAddresses[0]?.emailAddress,
-            firstName: user.firstName,
-            lastName: user.lastName,
-            imageUrl: user.imageUrl,
-            createdAt: user.createdAt,
-            resume: user.resume,
-        });
-    } catch (error) {
-        console.error("Error fetching user data:", error);
-        res.status(500).json({ message: "Internal Server Error", error: error.message });
-    }
-};
+//         if (!user) {
+//             return res.status(404).json({ message: "User not found in Clerk" });
+//         }
+//         console.log(res);
+//         res.status(200).json({
+//             id: user.id,
+//             email: user.emailAddresses[0]?.emailAddress,
+//             firstName: user.firstName,
+//             lastName: user.lastName,
+//             imageUrl: user.imageUrl,
+//             createdAt: user.createdAt,
+//             resume: user.resume,
+//         });
+//     } catch (error) {
+//         console.error("Error fetching user data:", error);
+//         res.status(500).json({ message: "Internal Server Error", error: error.message });
+//     }
+// };
 
 
 // Apply for a job
@@ -176,10 +176,17 @@ export const getUserApplications = async (req, res) => {
 //update user profile (resume)
 export const updateUserResume = async (req, res) => {
     try {
+        const userId = req.auth?.userId;
 
-        const userId = req.auth.userId;
+        if(!userId) {
+            return res.json({success: false, message: "User is not found."})
+        }
 
-        const resumeFile = req.resumeFile;
+        const resumeFile = req.file;
+
+        if(!resumeFile){
+            return res.json({success: false, message: "Upload Resume first!!"})
+        }
 
         const userData = await User.findById(userId);
 
@@ -190,7 +197,13 @@ export const updateUserResume = async (req, res) => {
 
         await userData.save();
 
-        return res.json({ success: true, message: 'Resume Uplated' })
+        return res.json({ success: true, message: 'Resume Uplated', user: {
+            _id: userData._id,
+            name: userData.name,
+            email: userData.email,
+            image: userData.image,
+            resume: userData.resume,
+        }, })
         
     } catch (error) {
         res.json({ success: false, message: error.message });
