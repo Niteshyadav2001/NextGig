@@ -31,8 +31,8 @@ function RecruiterLogin() {
         const {data} = await axios.post(backendAPI + '/api/company/login', {email, password})
 
         if(data.success){
-          dispatch(setCompanyToken({companyToken: data.token}))
-          dispatch(setCompanyData({companyData: data.company}))
+          dispatch(setCompanyToken(data.token))
+          dispatch(setCompanyData(data.company))
           dispatch(setRecruiterLogin(false))
           navigate('/dashboard')
         }
@@ -48,13 +48,12 @@ function RecruiterLogin() {
 
         const { data } = await axios.post(backendAPI+'/api/company/register',formData)
 
-        // console.log(data.success)
+        // console.log(data.company)
       
         if(data.success){
-          dispatch(setCompanyToken({companyToken: data.token}))
-          dispatch(setCompanyData({companyData: data.company}))
-          localStorage.setItem('companyToken', data.token)
-          dispatch(setRecruiterLogin({isRecruiterLogin: false}))
+          dispatch(setCompanyToken(data.token))
+          dispatch(setCompanyData(data.company))
+          dispatch(setRecruiterLogin(false))
           navigate('/dashboard')
         }
         else{

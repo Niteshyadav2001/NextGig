@@ -22,6 +22,8 @@ export const protectCompany = async (req,res,next) => {
 
         req.company = company;
 
+        console.log("going outside of middleware")
+
         next();
 
     } catch (error) {

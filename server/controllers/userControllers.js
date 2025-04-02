@@ -2,6 +2,7 @@ import { response } from "express";
 import JobApplication from "../models/jobApplication.js";
 import generateToken from "../utils/generateToken.js";
 import User from "../models/User.js";
+import Job from "../models/job.js";
 import { v2 as cloudinary } from 'cloudinary'
 import bcrypt from 'bcrypt'
 
@@ -130,7 +131,7 @@ export const applyForJob = async (req, res) => {
             return res.json({ success: false, message: 'Already applied' })
         }
 
-        const jobData = await jobId.findById(jobId)
+        const jobData = await Job.findById(jobId)
 
         if (!jobData) {
             return res.json({ success: false, message: 'Job Not Found' })

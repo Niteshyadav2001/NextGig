@@ -13,6 +13,7 @@ import 'quill/dist/quill.snow.css'
 import { ToastContainer, toast } from 'react-toastify';
 import useFetchJobs from "../hooks/useFetchJobs"
 import UserLogin from "./components/UserLogin"
+import { useFetchAppliedJobs } from "../hooks/useFetchAppliedJobs"
 
 function App() {
 
@@ -21,6 +22,11 @@ function App() {
 
   // calling useFetch Jobs
   useFetchJobs()
+
+  // calling user applied jobs only when user is login
+  // if(!isUserLogin){ 
+    useFetchAppliedJobs()
+  // }
 
 
   return (

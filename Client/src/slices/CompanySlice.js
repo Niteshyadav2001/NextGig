@@ -8,10 +8,10 @@ export const companySlice = createSlice({
   },
   reducers: {
     setCompanyToken: (state,action) => {
-      return {...state,...action.payload}
+      state.companyToken = action.payload
     },
     setCompanyData: (state,action) => {
-      return {...state,...action.payload}
+      state.companyData = action.payload
     },
   }
 })

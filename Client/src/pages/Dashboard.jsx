@@ -15,15 +15,15 @@ function Dashboard() {
 
   // Function to logout for company
   const logout = () => {
-    dispatch(setCompanyData({companyData: null}))
-    dispatch(setCompanyToken({companyToken: null}))
+    dispatch(setCompanyData(null))
+    dispatch(setCompanyToken(null))
     navigate('/')
   }
 
   // As soon as the dashboard is open, manage jobs page is openend.
   useEffect(() => {
     if(companyData)
-        navigate('/dashboard/manage-jobs')
+      navigate('/dashboard/manage-jobs')
   },[companyData])
 
   return (
