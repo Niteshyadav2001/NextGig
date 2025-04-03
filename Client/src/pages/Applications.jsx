@@ -8,6 +8,7 @@ import { toast } from 'react-toastify';
 import axios from 'axios';
 import { setUserData } from '../slices/UserSlice'
 import { useNavigate } from 'react-router-dom'
+import { useFetchAppliedJobs } from '../../hooks/useFetchAppliedJobs'
 
 function Applications() {
 
@@ -15,6 +16,7 @@ function Applications() {
   const [resume,setResume] = useState(null)
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const { refetch } = useFetchAppliedJobs()
 
   const backendAPI = useSelector((store) => store.backendAPI.API)
   const { userData, userApplications, userToken } = useSelector((store) => store.user)
@@ -47,6 +49,12 @@ function Applications() {
     }
   }
 
+  useEffect(() => {
+    if(userToken){
+      refetch()
+    }
+  },[userToken])
+
 
   return (
     <>
@@ -65,7 +73,7 @@ function Applications() {
             
             </>
             : <div className='flex gap-2'>
-              <a className='bg-blue-100 text-blue-600 px-4 py-2 rounded-lg' href="">Resume</a>
+              <a className='bg-blue-100 text-blue-600 px-4 py-2 rounded-lg' href={userData.resume} target='_blank'>Resume</a>
               <button onClick={() => setIsEdit(true)} className='text-gray-500 border border-gray-300 rounded-lg px-4 py-2 cursor-pointer'>Edit</button>
             </div>
           }

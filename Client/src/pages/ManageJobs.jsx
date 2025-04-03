@@ -5,10 +5,11 @@ import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
+import Loading from "../components/Loading";
 
 function ManageJobs() {
   const navigate = useNavigate()
-  const [jobs,setJobs] = useState([])
+  const [jobs,setJobs] = useState(null)
 
   const backendAPI = useSelector((store)=> store.backendAPI.API)
   const { companyToken } = useSelector((store)=> store.company) 
@@ -54,7 +55,11 @@ function ManageJobs() {
         fetchCompanyJobs()
   },[companyToken])
 
-  return (
+  return jobs ? jobs.length === 0 ? ( 
+    <div className="flex items-center justify-center h-[70vh]">
+      <p className="text-xl sm:text-2xl">No Jobs Available or Posted</p>
+    </div> 
+  ) : (
     <div className="container p-4 max-w-5xl">
       <div className="overflow-x-auto">
         <table className="min-w-full bg-white border border-gray-200 max-sm:text-sm">
@@ -90,7 +95,7 @@ function ManageJobs() {
         <button onClick={() => navigate('/dashboard/add-job')} className="bg-black text-white px-4 py-2 rounded cursor-pointer">Add new job</button>
       </div>
     </div>
-  );
+  ) : <Loading/>
 }
 
 export default ManageJobs;

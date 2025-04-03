@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { assets } from '../assets/assets'
 import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { setRecruiterLogin, setUserLogin } from '../slices/LoginSlice'
-import { setUserData, setUserToken } from '../slices/UserSlice'
+import { setUserApplications, setUserData, setUserToken } from '../slices/UserSlice'
 
 function Navbar() {
 
@@ -12,13 +12,14 @@ function Navbar() {
   const { userToken, userData } = useSelector((store) => store.user)
 
 
-  const logout = () => {
+   const logout = () => {
     dispatch(setUserData(null))
     dispatch(setUserToken(null))
     dispatch(setUserLogin(false))
+    dispatch(setUserApplications(null))
   }
 
-  console.log(userToken)
+  // console.log(userToken)
 
   return (
     <div className='shadow-lg py-4'>

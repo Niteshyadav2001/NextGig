@@ -20,7 +20,7 @@ function UserLogin() {
   const navigate = useNavigate()
   const backendAPI = useSelector(selectBackendApi)
 
-  console.log(backendAPI)
+  // console.log(backendAPI)
 
   const onSubmitHandler = async(e) => {
     e.preventDefault();
@@ -34,7 +34,7 @@ function UserLogin() {
         const {data} = await axios.post(backendAPI + '/api/users/login', {email, password})
   
           if(data.success){
-            console.log("User is successfully logged in.")
+            // console.log("User is successfully logged in.")
             dispatch(setUserToken(data.token))
             dispatch(setUserData(data.user))
             dispatch(setUserLogin(false))
