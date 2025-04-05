@@ -6,6 +6,7 @@ export const UserSlice = createSlice({
     userData: null,
     userApplications: null,
     userToken: null,
+    isUserDashboardOpen: false,
   },
   reducers: {
     setUserData:(state,action) => {
@@ -16,10 +17,13 @@ export const UserSlice = createSlice({
     },
     setUserToken:(state,action) => {
       state.userToken = action.payload;
+    },
+    setIsUserDashboardOpen:(state,action) => {
+      state.isUserDashboardOpen = action.payload;
     }
   }
 })
 
-export const {setUserData,setUserApplications,setUserToken} = UserSlice.actions
+export const {setUserData,setUserApplications,setUserToken, setIsUserDashboardOpen} = UserSlice.actions
 
 export default UserSlice.reducer

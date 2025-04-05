@@ -20,7 +20,7 @@ await connectCloudinary();
 // MiddleWares
 app.use(
   cors({
-    origin: "https://next-gig-new-client.vercel.app", // Replace with your frontend URL
+    origin: process.env.VITE_FRONTEND_URL, // Replace with your frontend URL
     credentials: true, // Allow cookies/authorization headers
   })
 );

@@ -14,6 +14,11 @@ import { ToastContainer, toast } from 'react-toastify';
 import useFetchJobs from "../hooks/useFetchJobs"
 import UserLogin from "./components/UserLogin"
 import { useFetchAppliedJobs } from "../hooks/useFetchAppliedJobs"
+import UserDashboard from "./components/UserDashboard"
+import ChangePassword from "./components/ChangePassword"
+import UpdateResume from "./components/UpdateResume"
+import DeleteAccount from "./components/DeleteAccount"
+import UserInfo from "./components/UserInfo"
 
 function App() {
 
@@ -36,9 +41,15 @@ function App() {
       <ToastContainer />
       <Routes>
         <Route path="/" element={<Home/>} />
+        {/* <Route path="/userDashboard" element={<UserDashboard/>} /> */}
         <Route path="/apply-jobs/:id" element={<ApplyJob/>} />
         <Route path="/applications" element={<Applications/>} />
         <Route path="/dashboard" element={<Dashboard/>} >
+
+        <Route path="change-password" element={<ChangePassword />} />
+        <Route path="update-resume" element={<UpdateResume />} />
+        <Route path="delete-account" element={<DeleteAccount />} />
+        <Route path="user-profile" element={<UserInfo />} />
         {
         companyToken ? <>
           <Route path="add-job" element={<AddJob/>} />
