@@ -26,7 +26,7 @@ function DeleteAccount() {
     try {
       
       const { data } = await axios.post(backendAPI+"/api/users/delete-account",
-        {},
+        {password: password.current.value},
         {headers: {token: userToken}},
       )
   
@@ -54,7 +54,7 @@ function DeleteAccount() {
           <input
             ref={password}
             className="outline-none px-2 py-2"
-            type="text"
+            type="password"
             placeholder="Password"
           />
         </div>
@@ -63,7 +63,7 @@ function DeleteAccount() {
           <input
             ref={confirmPassword}
             className="outline-none px-2 py-2"
-            type="text"
+            type="password"
             placeholder="Confirm Password"
           />
         </div>

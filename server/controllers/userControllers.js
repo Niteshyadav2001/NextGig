@@ -295,21 +295,26 @@ export const updatePassword = async(req,res) => {
 export const deleteAccount = async (req, res) => {
     try {
       const userId = req.auth?.userId;
+
+      const { password } = req.body;
   
       if (!userId) {
-        return res.json({ success: false, message: "User is not found." });
+        return res.json({ success: false, message: "User is not found" });
       }
   
-      // Delete the user from the database
-      const deletedUser = await User.findByIdAndDelete(userId);
+      const userData = await User.findById(userId);
   
-      if (!deletedUser) {
-        return res.json({ success: false, message: "User not found or already deleted." });
+      if (!userData) {
+        return res.json({ success: false, message: "User not found or already deleted" });
       }
+
+      if (!(await bcrypt.compare(password, userData.password))) {
+        return res.json({ success: false, message: 'Wrong Password' });
+    }
   
       return res.json({
         success: true,
-        message: "Account deleted successfully."
+        message: "Account deleted successfully"
       });
     } catch (error) {
       return res.json({ success: false, message: error.message });
