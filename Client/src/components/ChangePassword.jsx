@@ -4,17 +4,13 @@ import { FcLock } from "react-icons/fc";
 import { useDispatch, useSelector } from "react-redux";
 import axios from 'axios';
 import { toast } from "react-toastify";
+import { setIsUserDashboardOpen } from "../slices/UserSlice";
 
 function ChangePassword() {
-  // const [password, setPassword] = useState("")
-  // const [newPassword, setNewPassword] = useState("")
-  // const [confirmNewPassword, setConfirmNewPassword] = useState("")
-
+  const dispatch = useDispatch();
   const password = useRef();
   const newPassword = useRef();
   const confirmNewPassword = useRef();
-
-  // console.log(password)
 
   const backendAPI = useSelector((store) => store.backendAPI.API)
   const { userToken } = useSelector((store) => store.user)
@@ -43,6 +39,7 @@ function ChangePassword() {
         password.current.value = null;
         newPassword.current.value = null;
         confirmNewPassword.current.value = null;
+        dispatch(setIsUserDashboardOpen(false))
       } else {
         toast.error(data.message)
       }

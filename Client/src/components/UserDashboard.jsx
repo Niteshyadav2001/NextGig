@@ -60,8 +60,9 @@ function RecruiterLogin() {
       );
 
       if (data.success) {
-        dispatch(setUserData(data.user));
         toast.success(data.message);
+        dispatch(setUserData(data.user));
+        dispatch(setIsUserDashboardOpen(false))
       } else {
         toast.error(data.message);
       }
@@ -85,9 +86,10 @@ function RecruiterLogin() {
       )
 
       if(data.success){
+        toast.success(data.message)
         toggleEdit();
         dispatch(setUserData(data.user))
-        toast.success(data.message)
+        dispatch(setIsUserDashboardOpen(false))
       } else {
         toast.error(data.message)
       }

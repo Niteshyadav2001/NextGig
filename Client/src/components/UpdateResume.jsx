@@ -3,10 +3,10 @@ import { assets } from "../assets/assets";
 import axios from 'axios';
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { setUserData } from "../slices/UserSlice";
+import { setIsUserDashboardOpen, setUserData } from "../slices/UserSlice";
 
 function UpdateResume() {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const [resume,setResume] = useState(null)
   const backendAPI = useSelector((store) => store.backendAPI.API)
   const { userToken, userData } = useSelector((store) => store.user)
@@ -21,8 +21,9 @@ function UpdateResume() {
       )
 
       if(data.success){
-        dispatch(setUserData(data.user))
         toast.success(data.message)
+        dispatch(setIsUserDashboardOpen(false))
+        dispatch(setUserData(data.user))
       } else {
         toast.error(data.error)
       }
