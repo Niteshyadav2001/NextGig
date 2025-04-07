@@ -177,3 +177,142 @@ export const updateUserResume = async (req, res) => {
         res.json({ success: false, message: error.message });
     }
 }
+
+
+// update name of user
+export const updateProfile = async(req,res) => {
+    try {
+        const userId = req.auth?.userId;
+
+        if(!userId) {
+            return res.json({success: false, message: "User is not found."})
+        }
+
+        const imageFile = req.file;
+
+        if(!imageFile){
+            return res.json({success: false, message: "Please select a photo!!"})
+        }
+
+        const userData = await User.findById(userId);
+
+        if(imageFile){
+            const imageUpload = await cloudinary.uploader.upload(imageFile.path);
+            userData.image = imageUpload.secure_url;
+        }
+
+        await userData.save();
+
+        return res.json({ success: true, message: 'Profile updated successfully', user: {
+            _id: userData._id,
+            name: userData.name,
+            email: userData.email,
+            image: userData.image,
+            resume: userData.resume,
+        }, })
+
+    } catch (error) {
+        return res.json({ success: false, message: error.message})        
+    }
+}
+
+
+// update name of user
+export const updateName = async(req,res) => {
+    try {
+        const userId = req.auth?.userId;
+
+        if(!userId) {
+            return res.json({success: false, message: "User is not found."})
+        }
+
+        const userData = await User.findById(userId);
+
+        if(!userData) {
+            return res.json({success: false, message: "User is not found."})
+        }
+
+        const { newName } = req.body;
+
+        userData.name = newName;
+
+        await userData.save();
+
+        return res.json({
+            success: true,
+            message: "Name Updated Sucessfully",
+            user: {
+                _id: userData._id,
+                name: userData.name,
+                email: userData.email,
+                image: userData.image,
+                resume: userData.resume,
+            },
+        })
+    } catch (error) {
+        return res.json({ success: false, message: error.message })
+    }
+}
+
+
+
+// update password of user
+export const updatePassword = async(req,res) => {
+    try {
+        const userId = req.auth?.userId;
+
+        if(!userId) {
+            return res.json({success: false, message: "User is not found."})
+        }
+
+        const {password, newPassword } = req.body;
+        const userData = await User.findById(userId);
+
+        if (!userData) {
+            return res.json({ success: false, message: "User not found." });
+          }
+
+        if (!(await bcrypt.compare(password, userData.password))) {
+            return res.json({ success: false, message: 'Old password is incorrect' });
+        }
+          
+        const salt = await bcrypt.genSalt(10);
+        const hashPassword = await bcrypt.hash(newPassword, salt);
+        userData.password = hashPassword;
+        await userData.save()
+
+        return res.json({
+            success: true,
+            message: "Password Updated Sucessfully"
+        })
+    } catch (error) {
+        return res.json({ success: false, message: error.message})
+    }
+}
+
+
+// Delete Account of user
+export const deleteAccount = async (req, res) => {
+    try {
+      const userId = req.auth?.userId;
+  
+      if (!userId) {
+        return res.json({ success: false, message: "User is not found." });
+      }
+  
+      // Delete the user from the database
+      const deletedUser = await User.findByIdAndDelete(userId);
+  
+      if (!deletedUser) {
+        return res.json({ success: false, message: "User not found or already deleted." });
+      }
+  
+      return res.json({
+        success: true,
+        message: "Account deleted successfully."
+      });
+    } catch (error) {
+      return res.json({ success: false, message: error.message });
+    }
+  };
+  
